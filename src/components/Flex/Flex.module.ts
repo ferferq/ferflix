@@ -12,5 +12,5 @@ export const FlexStyle = styled.div<FlexProps>`
   flex-direction:${props => props.direction ? props.direction : 'row'};
   align-items: ${props => props.alignItems ? props.alignItems : 'center'};
   justify-content: ${props => props.justifyContent ? props.justifyContent : 'center'};
-  gap: ${props => props.gap ? props.gap : ''};;
+  gap: ${props => props.gap ? props.gap : ''};
 `
