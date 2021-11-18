@@ -1,7 +1,7 @@
 import { ListMovies } from "./ListMovies";
 import { Container, MovieRowList, Section, Arrow, DivOver, Space } from "./SectionMovies.module";
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 type itemProps = {
   id: number,
@@ -61,13 +61,17 @@ const handleRightArrow = (results: itemProps[]) => {
     setScrollX(x);
 }
 
+useEffect(() => {
+  console.log(scrollX);
+}, [scrollX]);
+
   return (
     <Section>
       {
         list.map(item => {
           return (
-            <>
-            <Container key={item.slug} onMouseOver={() => handleonHover(item.slug)}
+            <Fragment key={item.slug}>
+            <Container onMouseOver={() => handleonHover(item.slug)}
             onMouseLeave={() => handleonHoverOut()}
             >
               <Arrow bOpacity={slugCorrent === item.slug && scrollX !== 0 ? true : false} onClick={() => handleLeftArrow()}><IoIosArrowBack color="white" size="40px" /></Arrow>
@@ -80,7 +84,7 @@ const handleRightArrow = (results: itemProps[]) => {
               </DivOver>
             </Container>
             <Space></Space>
-            </>
+            </Fragment>
           )
         })
       }

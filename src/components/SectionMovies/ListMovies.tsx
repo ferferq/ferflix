@@ -1,4 +1,7 @@
-import React, { Fragment, useState } from "react";
+import React, { FormEvent, Fragment, useEffect, useRef, useState } from "react";
+import { SyntheticEvent } from "react";
+import { useModalMovieInfo } from "../../hooks/useModalMovieInfo";
+import { useMovieInfo } from "../../hooks/useMovieInfo";
 import { ModalInfoMovie } from "../ModalInfoMovie";
 import { Img, Container } from "./ListMovies.module";
 
@@ -19,28 +22,35 @@ interface ListMoviesProps {
 }
 
 export function ListMovies({ listMovie }: ListMoviesProps) {
-  const [infoMovies, setInfoMovie] = useState(0);
-  function mouseOver(id: number) {
-    setInfoMovie(id);
-  }
-  function mouseOverOut() {
-    setInfoMovie(0);
+  const {selectedItem} = useMovieInfo();
+  const {modalMovieInfoOpen} = useModalMovieInfo();
+
+ // const [infoMovies, setInfoMovie] = useState(0);
+  function mouseOver(item: itemProps, e: SyntheticEvent) {
+    const {x, y, width, height} = e.currentTarget.getBoundingClientRect();
+    const positionX = x - (width / 2);
+    const positionY = y - (height / 2);
+    selectedItem(item, positionX, positionY);
+    modalMovieInfoOpen();
   }
 
   return (
     <Container>
       {
-        listMovie.map(item => {
+        listMovie.map(itemX => {
           return (
-            item.poster_path ?
-            <div key={item.id}>
-              <Img onMouseOver={() => mouseOver(item.id)} src={item.backdrop_path ? `https://image.tmdb.org/t/p/original/${item.backdrop_path}` : `images/o-informante.jpg`} alt={item.name} /> 
-              {
+            itemX.backdrop_path &&
+            <div key={itemX.id}>
+              <Img
+              onMouseOver={(e: SyntheticEvent) => mouseOver(itemX, e)} 
+              src={itemX.backdrop_path ? `https://image.tmdb.org/t/p/original/${itemX.backdrop_path}` : `images/o-informante.jpg`} 
+              alt={itemX.name ? itemX.name : itemX.title} 
+              />
+              {/* 
                 infoMovies === item.id &&
                 <ModalInfoMovie fCloseModall={mouseOverOut}  item={item}/>
-              }
+             */}
             </div>
-            : <Fragment key={item.id}></Fragment>
           )
         })
       }

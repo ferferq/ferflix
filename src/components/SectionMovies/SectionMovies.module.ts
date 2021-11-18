@@ -26,7 +26,7 @@ interface ArrowProps {
 
 export const Arrow = styled.button<ArrowProps>`
     position: absolute;
-    width: 40px;
+    width: 60px;
     height: 200px;
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 99;

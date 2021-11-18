@@ -1,4 +1,5 @@
-import { Img, InfoMovie } from "./ModalInfoMovie.module";
+import { useMovieInfo } from "../../hooks/useMovieInfo";
+import { Img, InfoMovie, Modal } from "./ModalInfoMovie.module";
 
 type itemProps = {
   id: number,
@@ -13,16 +14,27 @@ type itemProps = {
 }
 
 interface ModalInfoMovieProps {
-  fCloseModall: () => void;
+  fCloseModal: () => void;
   item: itemProps;
 }
 
-export function ModalInfoMovie({ item, fCloseModall }: ModalInfoMovieProps) {
+export function ModalInfoMovie({ item, fCloseModal }: ModalInfoMovieProps) {
+  const {position} = useMovieInfo();
+
+  function hundleOnMouseOut(e: MouseEvent) {
+    if (e.target === e.currentTarget)
+    fCloseModal();
+    else
+    return;
+  }
+
   return (
-    <InfoMovie onMouseOut={fCloseModall}>
+  <Modal onMouseOver={(e: MouseEvent) => hundleOnMouseOut(e)}>
+    <InfoMovie positionY={position.positionHeight} positionX={position.positionWidth}>
       <Img src={`https://image.tmdb.org/t/p/original/${item.backdrop_path}`} alt={item.name} />
       <p>{item.name ? item.name : item.title}</p>
       <p>{item.vote_average} relevante</p>
     </InfoMovie>
+  </Modal>
   );
 }

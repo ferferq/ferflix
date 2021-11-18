@@ -7,7 +7,7 @@ export const Container = styled.div`
     width: 230px;
     margin: 0 2px;
   }
-  transform: translateY(0);
+  //transform: translateY(0);
   transition: all ease 0.4s;
 `
 

@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Header } from "../../components/Header";
 import { MainScreen } from "../../components/MainScreen";
+import { ModalInfoMovie } from "../../components/ModalInfoMovie";
 import { SectionMovies } from "../../components/SectionMovies";
+import { useModalMovieInfo } from "../../hooks/useModalMovieInfo";
+import { useMovieInfo } from "../../hooks/useMovieInfo";
 import { api } from "../../services/api";
 import { BrowseStyled } from "./Browse.module";
 
@@ -29,6 +32,8 @@ interface listProps {
 export default function Browse() {
   const [list, setList] = useState<listProps[]>([] as listProps[]);
   const [mainScreenItem, setMainScreenItem] = useState<itemProps>({} as itemProps);
+  const {isOpenModalInfo, modalMovieInfoClose, modalMovieInfoOpen} = useModalMovieInfo();
+  const {item} = useMovieInfo();
 
   useEffect(() => {
     async function getMovies() {
@@ -50,10 +55,16 @@ export default function Browse() {
 
 
   return (
+  <>
     <BrowseStyled>
       <Header/>
       {mainScreenItem.id && <MainScreen item={mainScreenItem}/>}
-        {list && <SectionMovies list={list}/>}
+      {list && <SectionMovies list={list}/>}
+      {
+      isOpenModalInfo &&
+      <ModalInfoMovie item={item} fCloseModal={modalMovieInfoClose} />
+      }
     </BrowseStyled>
+  </>
   )
 }
